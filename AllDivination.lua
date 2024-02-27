@@ -9,88 +9,60 @@ local UTILS = require("utils")
 local player = API.GetLocalPlayerName()
 local timeout = os.time() + 300
 local idle_time = os.time()
-local startTime os.time()
-local afk = os.time()
 
 local aioSelect = API.CreateIG_answer()
 local aioOptions = {
     {
         label = "Pale Wisps",
-        ids = {
-            npc = 18150
-        }
+        ids = {18150,18173}
     },
     {
         label = "Flickering Wisps",
-        ids = {
-            npc = 18151
-        }
+        ids = {18151,18174}
     },
     {
         label = "Bright Wisps",
-        ids = {
-            npc = 18153
-        }
+        ids = {18153,1876}
     },
     {
         label = "Glowing Wisps",
-        ids = {
-            npc = 18155
-        }
+        ids = {18155,18178}
     },
     {
         label = "Sparkling Wisps",
-        ids = {
-            npc = 18157
-        }
+        ids = {18157,18180}
     },
     {
         label = "Gleaming Wisps",
-        ids = {
-            npc = 18159
-        }
+        ids = {18159,18182}
     },
     {
         label = "Vibrant Wisps",
-        ids = {
-            npc = 18161
-        }
+        ids = {18161,18184}
     },
     {
         label = "Lustrous Wisps",
-        ids = {
-            npc = 18163
-        }
+        ids = {18163,18186}
     },
     {
         label = "Elder Wisps",
-        ids = {
-            npc = 13614
-        }
+        ids = {13614,13616}
     },
     {
         label = "Brilliant Wisps",
-        ids = {
-            npc = 18165
-        }
+        ids = {18165,18188}
     },
     {
         label = "Radiant Wisps",
-        ids = {
-            npc = 18167
-        }
+        ids = {18167,18190}
     },
     {
         label = "Luminous Wisps",
-        ids = {
-            npc = 18169
-        }
+        ids = {18169,18192}
     },
     {
         label = "Incandescent Wisps",
-        ids = {
-            npc = 18171
-        }
+        ids = {18171,18194}
     },
 }
 
@@ -155,15 +127,19 @@ API.SetDrawTrackedSkills(true)
 API.ScriptRuntimeString()
 API.GetTrackedSkills()
 
+
 while API.Read_LoopyLoop() do
     if (aioSelect.return_click) then
         aioSelect.return_click = false
-        
         for i, v in ipairs(aioOptions) do
             if (aioSelect.string_value == v.label) then
-                selectedNPC = v.ids.npc
+                selectedNPC = v.ids
             end
         end
+    end
+
+    if selectedNPC == nil then
+        print("Please select a wisp type from the dropdown menu!")
     end
 
     if API.InvFull_() then
@@ -173,9 +149,10 @@ while API.Read_LoopyLoop() do
         API.RandomSleep2(600, 0, 600)
     end
 
-    if not API.IsPlayerAnimating_(player, 100) and (not API.InvFull_()) then
+    if not API.IsPlayerAnimating_(player, 100) and (not API.InvFull_()) and selectedNPC ~= nil then
         print("Harvest")
-        API.DoAction_NPC(0xc8,1488,{ selectedNPC },50)
+        API.DoAction_NPC(0xc8, 1488, selectedNPC , 50) -- harvest
+        print(selectedNPC)
     end
 
     if os.time() > timeout then
