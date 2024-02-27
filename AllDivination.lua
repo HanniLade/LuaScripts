@@ -163,6 +163,7 @@ while API.Read_LoopyLoop() do
 
     idle()
         API.DoRandomEvent(18204)
+        API.DoRandomEvents()
 end
 
 API.SetDrawTrackedSkills(false)
